@@ -10,11 +10,31 @@ const Sound = (() => {
     if (!AC) return;
     ctx = new AC();
     master = ctx.createGain();
-    master.gain.value = muted ? 0 : 0.5;
+    master.gain.value = muted ? 0 : 0.9;
     master.connect(ctx.destination);
   }
+  let primed = false;
+  // iOS mutes Web Audio under the silent switch unless an <audio> element has played.
+  function prime() {
+    if (primed) return;
+    primed = true;
+    try {
+      const a = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAA=');
+      a.setAttribute('playsinline', ''); a.volume = 0.01;
+      const p = a.play(); if (p && p.catch) p.catch(() => {});
+    } catch (e) {}
+    try {
+      const b = ctx.createBuffer(1, 1, 22050), s = ctx.createBufferSource();
+      s.buffer = b; s.connect(ctx.destination); s.start(0);
+    } catch (e) {}
+  }
   function unlock() {
-    try { init(); if (ctx && ctx.state !== 'running') ctx.resume(); } catch (e) {}
+    try {
+      init();
+      if (!ctx) return Promise.resolve();
+      prime();
+      return ctx.state === 'running' ? Promise.resolve() : ctx.resume();
+    } catch (e) { return Promise.resolve(); }
   }
   for (const ev of ['pointerdown', 'touchend', 'keydown', 'click'])
     window.addEventListener(ev, unlock, { passive: true });
@@ -55,14 +75,16 @@ const Sound = (() => {
   return {
     play(name) {
       if (muted || !effects[name]) return;
-      try { unlock(); if (ctx && ctx.state === 'running') effects[name](); } catch (e) {}
+      try {
+        unlock().then(() => { if (ctx && !muted && ctx.state === 'running') effects[name](); }).catch(() => {});
+      } catch (e) {}
     },
     isMuted: () => muted,
     setMuted(m) {
       muted = m;
       try { localStorage.setItem('vwr-muted', m ? '1' : '0'); } catch (e) {}
       unlock();
-      if (master) master.gain.value = m ? 0 : 0.5;
+      if (master) master.gain.value = m ? 0 : 0.9;
     }
   };
 })();

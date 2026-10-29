@@ -5,34 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1684bd">
 <title>Village Water Rescue</title>
-<link rel="icon" href="assets/drop.svg" type="image/svg+xml">
+<link rel="icon" href="assets/props/drop.png" type="image/png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main class="shell">
-  <header class="brand"><img src="assets/drop.svg" alt="" width="16" height="20"> Inspired by <strong>charity: water</strong> &middot; Every drop matters</header>
+  <header class="brand"><img src="assets/props/drop.png" alt="" width="14" height="20"> Inspired by <strong>charity: water</strong> &middot; Every drop matters</header>
   <section id="game" aria-label="Village Water Rescue game">
     <div class="hud">
       <div class="meter">
-        <img class="meter-icon" src="assets/drop.svg" alt="">
+        <img class="meter-icon" src="assets/props/drop.png" alt="">
         <span>Water Collected</span>
         <strong id="percent">0%</strong>
         <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="fill"></div></div>
       </div>
       <div class="clock"><img src="assets/clock.svg" alt=""><span id="timer">01:30</span></div>
+      <div class="level-info" aria-live="polite"><strong id="level-number">LEVEL 1</strong><span id="village-name">The Valley Village</span></div>
     </div>
     <div id="world" tabindex="0" aria-label="Side-scrolling village game">
       <div id="sky" class="layer"></div>
       <div id="landscape" class="layer"></div>
+      <div id="clouds" aria-hidden="true"><img src="assets/scenery/cloud-1.png" alt="" class="c1"><img src="assets/scenery/cloud-3.png" alt="" class="c2"><img src="assets/scenery/cloud-2.png" alt="" class="c3"></div>
+      <div id="scenery" aria-hidden="true"></div>
       <div id="ground" class="layer"></div>
       <div id="villagers" aria-hidden="true">
-        <img class="villager v1" src="assets/villager.svg" alt="">
-        <img class="villager v2" src="assets/villager.svg" alt="">
-        <img class="villager v3" src="assets/villager.svg" alt="">
+        <img class="villager v1" alt="" draggable="false">
+        <img class="villager v2" alt="" draggable="false">
+        <img class="villager v3" alt="" draggable="false">
+        <img class="villager v4" alt="" draggable="false">
         <div id="thanks">Thank you for the water!</div>
       </div>
       <div id="objects"></div>
-      <div id="player" class="idle" aria-label="Player"><img id="sprite" src="assets/player-idle.svg" alt="" draggable="false"></div>
+      <div id="player" class="idle" aria-label="Player"><div id="character-art" class="character-art" data-canister-state="empty"><img id="sprite" src="assets/character-animations/idle.png" alt="" draggable="false"><div id="canister-meter" aria-hidden="true"><div id="canister-water"></div></div><div id="spill-splash" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
       <div id="shadow"></div>
     </div>
     <div id="overlay" class="overlay"><div class="panel" id="panel"></div></div>

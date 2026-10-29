@@ -7,6 +7,9 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 
 /* HUD */
 .hud{position:absolute;top:12px;left:12px;right:12px;z-index:8;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
+.level-info{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;min-width:170px;padding:6px 12px;border:2px solid #e3faff;border-radius:12px;background:#123e58ed;color:#fff;text-align:center;box-shadow:0 4px 12px #0004}
+.level-info strong{font-size:12px;color:#ffd45b}
+.level-info span{font-size:14px;font-weight:bold}
 .meter,.clock{background:linear-gradient(#123e58f2,#08283bf2);color:#fff;border:3px solid #e3faff;border-radius:16px;padding:8px 14px;font-weight:bold;box-shadow:0 4px 12px #0005}
 .meter{width:min(310px,62%);display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"icon label pct" "icon track track";gap:3px 10px;align-items:center}
 .meter-icon{grid-area:icon;width:30px;height:38px}
@@ -22,38 +25,72 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 /* World */
 #world{--feet:12.2%;height:clamp(320px,55vw,540px);position:relative;overflow:hidden;background:#8dd6ff;outline:none;touch-action:manipulation}
 .layer{position:absolute;left:0;width:100%;background-repeat:repeat-x;will-change:background-position}
-#sky{inset:0;height:100%;background-image:url('assets/sky.svg');background-size:auto 100%;background-position:0 bottom}
-#landscape{inset:0;height:100%;background-image:url('assets/village.svg');background-size:auto 100%;background-position:0 bottom}
-#ground{bottom:0;height:17%;background-image:url('assets/ground.svg');background-size:auto 100%;background-position:0 0;z-index:3;box-shadow:0 -4px 0 #4a9a2c}
+#sky{inset:0;height:100%;background:linear-gradient(#6fc3f5,#cdeeff)}
+#landscape{inset:0;height:100%;background-image:url('assets/backgrounds/valley.webp');background-size:auto 100%;background-position:0 bottom}
+#ground{bottom:0;height:17%;background-image:url('assets/ground/valley.webp');background-size:auto 100%;background-position:0 0;z-index:3}
+#world[data-scene="hillside"] #ground{background-image:url('assets/ground/hillside.webp')}
+#world[data-scene="mountain"] #ground{background-image:url('assets/ground/mountain.webp')}
 
-#player{position:absolute;bottom:var(--feet);left:20%;height:27%;aspect-ratio:100/140;z-index:5;transform-origin:50% 100%;will-change:transform,left,bottom}
-#sprite{display:block;width:100%;height:100%;transform-origin:50% 100%;pointer-events:none}
-#player.idle #sprite{animation:breathe 1.6s ease-in-out infinite}
-#player.run #sprite{animation:bob .36s ease-in-out infinite}
+/* Drifting clouds and swaying scenery (decorative only) */
+#clouds{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#clouds img{position:absolute;height:auto;will-change:transform;animation:drift linear infinite}
+#clouds .c1{top:5%;width:20%;left:-24%;animation-duration:110s}
+#clouds .c2{top:17%;width:15%;left:-24%;animation-duration:150s;animation-delay:-60s}
+#clouds .c3{top:9%;width:12%;left:-24%;animation-duration:130s;animation-delay:-100s}
+@keyframes drift{to{transform:translateX(560%)}}
+#scenery{position:absolute;inset:0;z-index:2;pointer-events:none}
+.deco{position:absolute;bottom:16.2%;width:auto;display:none;transform-origin:50% 100%;-webkit-user-drag:none}
+.deco.sway{animation:sway 4.5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.3deg)}}
+
+#player{position:absolute;bottom:var(--feet);left:20%;height:27%;aspect-ratio:220/266;z-index:5;transform-origin:50% 100%;will-change:transform,left,bottom}
+#character-art{position:relative;width:100%;height:100%;transform-origin:50% 100%}
+#sprite{display:block;width:100%;height:100%;transform-origin:50% 100%;pointer-events:none;object-fit:contain}
+#canister-meter{position:absolute;left:40%;top:84%;width:9%;height:19%;border-radius:40% / 12%;background:linear-gradient(90deg,#e6d9b8,#cdbf9c);box-shadow:inset 0 0 0 1px #f0b80b;overflow:hidden;pointer-events:none;z-index:1}
+#canister-water{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(#54c9f4,#1595d2);opacity:.9;transition:height .25s ease}
+#spill-splash{position:absolute;left:15%;top:61%;width:40%;height:24%;pointer-events:none;opacity:0}
+#spill-splash i{position:absolute;left:45%;top:35%;width:9px;height:12px;border-radius:70% 30% 65% 35%;background:#32b8eb;transform:scale(0)}
+#spill-splash i:nth-child(2){--splash-x:-18px;--splash-y:-17px}
+#spill-splash i:nth-child(3){--splash-x:15px;--splash-y:-22px}
+#player.spill #spill-splash{opacity:1}
+#player.spill #spill-splash i{animation:water-spill .55s ease-out both}
+#player.spill #spill-splash i:nth-child(1){--splash-x:-8px;--splash-y:-24px}
+#player.stumble #character-art{animation:stumble .85s ease-in-out}
+@keyframes water-spill{to{transform:translate(var(--splash-x,0),var(--splash-y,-12px)) scale(1);opacity:0}}
+@keyframes stumble{0%,100%{transform:rotate(0)}20%{transform:rotate(-17deg) translateY(5%)}45%{transform:rotate(12deg) translateY(2%)}70%{transform:rotate(-8deg)}}
+#player.idle #character-art{animation:breathe 1.6s ease-in-out infinite}
+#player.walk #character-art{animation:bob var(--step,.4s) ease-in-out infinite}
+#player.boost #character-art{animation:sprint var(--step,.22s) ease-in-out infinite}
 #player.hurt #sprite{animation:hurt .4s linear}
+#player.stumble #character-art{animation:stumble .85s ease-in-out}
 @keyframes breathe{50%{transform:scaleY(1.035) scaleX(.985)}}
-@keyframes bob{50%{transform:translateY(-4%)}}
+@keyframes bob{50%{transform:translateY(-2.5%)}}
+@keyframes sprint{0%,100%{transform:rotate(2deg)}50%{transform:translateY(-3%) rotate(-1deg)}}
 @keyframes hurt{0%,100%{filter:none}25%,75%{filter:brightness(1.5) sepia(1) hue-rotate(-30deg) saturate(5)}}
 #shadow{position:absolute;z-index:4;width:8%;height:2.6%;border-radius:50%;background:#0006;transform:translateX(-50%);pointer-events:none}
 
-#villagers{position:absolute;right:3%;bottom:var(--feet);z-index:4;display:flex;align-items:flex-end;gap:2%;height:21%}
-.villager{height:100%;width:auto;transform-origin:50% 100%;animation:breathe 2.2s ease-in-out infinite}
-.villager.v2{height:84%;filter:brightness(.92) saturate(1.2)}
-.villager.v3{height:90%;filter:brightness(1.06) saturate(.9)}
-#villagers.happy .villager{animation:cheer .55s ease-in-out infinite alternate}
-#villagers.happy .v2{animation-delay:.15s}
-#villagers.happy .v3{animation-delay:.3s}
-@keyframes cheer{to{transform:translateY(-14%)}}
-#thanks{position:absolute;bottom:106%;right:0;background:#fff;border:3px solid #4d4b34;border-radius:18px;padding:8px 10px;width:150px;text-align:center;font-size:13px;font-weight:bold;display:none}
-#thanks::after{content:"";position:absolute;bottom:-11px;right:30px;border:8px solid transparent;border-top-color:#4d4b34;border-bottom:0}
+#villagers{position:absolute;left:72%;right:auto;bottom:var(--feet);z-index:4;display:flex;align-items:flex-end;gap:1.5%;pointer-events:none}
+.villager{height:calc(var(--sh,280) * .56px * var(--s,1));width:auto;transform-origin:50% 100%;animation:villager-idle 2.6s ease-in-out infinite;-webkit-user-drag:none;filter:drop-shadow(0 3px 2px #0003)}
+.villager.v2{animation-delay:-.7s;animation-duration:3s}
+.villager.v3{animation-delay:-1.4s}
+.villager.v4{animation-delay:-2s;animation-duration:3.3s}
+@keyframes villager-idle{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.4deg) translateY(-1%)}}
+#villagers.happy .villager{animation:villager-cheer .5s ease-in-out infinite alternate}
+#villagers.happy .v2{animation-delay:.12s}
+#villagers.happy .v3{animation-delay:.24s}
+#villagers.happy .v4{animation-delay:.06s}
+@keyframes villager-cheer{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-12%) rotate(2deg)}}
+#thanks{position:absolute;bottom:106%;left:0;background:#fff;border:3px solid #4d4b34;border-radius:18px;padding:8px 10px;width:150px;text-align:center;font-size:13px;font-weight:bold;display:none}
+#thanks::after{content:"";position:absolute;bottom:-11px;left:30px;border:8px solid transparent;border-top-color:#4d4b34;border-bottom:0}
 #villagers.happy #thanks{display:block}
 
 #objects{position:absolute;inset:0;z-index:4;pointer-events:none}
-.item{position:absolute;display:none;cursor:pointer;pointer-events:auto;touch-action:manipulation;-webkit-user-drag:none}
+.item{position:absolute;display:none;cursor:default;pointer-events:none;-webkit-user-drag:none}
 .item.blue{animation:float 1.4s ease-in-out infinite alternate;filter:drop-shadow(0 3px 3px #0004)}
 .item.dirty{animation:float 1.2s ease-in-out infinite alternate;filter:drop-shadow(0 3px 3px #0006);cursor:default}
 .item.gold{animation:glow 1s ease-in-out infinite alternate}
 .item.rock{cursor:default;filter:drop-shadow(0 4px 2px #0005)}
+.item{object-fit:contain}
 @keyframes float{to{margin-bottom:8px}}
 @keyframes glow{from{filter:drop-shadow(0 0 6px #ffe35a)}to{filter:drop-shadow(0 0 20px #ffb300);margin-bottom:6px}}
 .pop{position:absolute;z-index:9;font-weight:bold;font-size:22px;color:#fff;text-shadow:0 2px 0 #0a5f90,0 0 6px #000a;pointer-events:none;animation:pop .8s ease-out forwards}
@@ -80,8 +117,10 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 .panel .stat{font-size:20px;font-weight:bold;color:#0a5fa8}
 .cast{display:flex;justify-content:center;align-items:flex-end;gap:8px;height:clamp(70px,16vw,110px);margin:6px 0}
 .cast img{height:100%;animation:cheer .55s ease-in-out infinite alternate}
-.cast img:nth-child(2){height:82%;filter:brightness(.92) saturate(1.2);animation-delay:.15s}
-.cast img:nth-child(3){filter:brightness(1.06) saturate(.9);animation-delay:.3s}
+@keyframes cheer{to{transform:translateY(-14%)}}
+.cast img:nth-child(1){height:84%}
+.cast img:nth-child(2){animation-delay:.15s}
+.cast img:nth-child(3){height:94%;animation-delay:.3s}
 .cast img.sad{animation:none;filter:saturate(.5) brightness(.9)}
 
 /* Controls */
@@ -100,12 +139,14 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
   .shell{padding:0}.brand{font-size:12px;margin:6px 0}
   #game{border-radius:0;border-width:2px}
   .hud{top:6px;left:6px;right:6px}
+  .level-info{top:62px;min-width:150px;padding:4px 9px}
+  .level-info span{font-size:12px}
   .meter,.clock{padding:5px 8px;border-width:2px}
   .meter span{font-size:12px}.meter strong{font-size:14px}.meter-icon{width:22px;height:28px}
   .clock{font-size:15px}.clock img{width:20px;height:20px}
   .mobile-controls button{flex:1;padding:12px 4px;font-size:16px}
   .footer{flex-wrap:wrap}.footer #message{flex-basis:100%}
-  #villagers{right:1%}.villager.v3{display:none}
+  .villager.v4{display:none}
   #thanks{width:110px;font-size:11px}
 }
 @media(hover:hover) and (pointer:fine) and (min-width:900px){.mobile-controls{display:none}}

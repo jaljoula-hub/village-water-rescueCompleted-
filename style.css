@@ -151,3 +151,16 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 }
 @media(hover:hover) and (pointer:fine) and (min-width:900px){.mobile-controls{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* charity: water section */
+.cw-section{margin:16px auto 8px;max-width:960px;text-align:center;background:linear-gradient(#fff,#eaf6fd);border:4px solid #ffc907;border-radius:18px;padding:18px 16px;box-shadow:0 5px #1684bd;color:#0a3f63;font-family:"Trebuchet MS",Verdana,sans-serif}
+.cw-section h2{margin:0 0 8px;font-size:clamp(22px,4vw,30px);color:#1684bd}
+.cw-section p{margin:0 auto 14px;max-width:680px;font-size:16px;line-height:1.5}
+.cw-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.cw-btn{display:inline-block;min-height:48px;box-sizing:border-box;padding:13px 22px;border-radius:14px;font-weight:bold;font-size:17px;text-decoration:none;border:3px solid #fff;box-shadow:0 4px #0a3f63;transition:transform .1s,filter .15s}
+.cw-learn{background:#1684bd;color:#fff}
+.cw-donate{background:#ffc907;color:#0a2f4a}
+.cw-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.cw-btn:active{transform:translateY(2px)}
+.cw-btn:focus-visible{outline:3px solid #0a3f63;outline-offset:3px}
+@media(max-width:580px){.cw-section{margin:12px 8px;padding:14px 10px}.cw-btn{width:100%}}

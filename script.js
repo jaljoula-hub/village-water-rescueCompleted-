@@ -119,6 +119,25 @@ function instructions() {
   screen('How to Play', list, [['Start Game', start, true], ['Back', menu]]);
 }
 
+const MILESTONES = [
+  [25, '25 percent, keep going!'],
+  [50, 'Halfway there! 50 percent!'],
+  [75, '75 percent, almost full!'],
+  [100, '100 percent, full canister! Head to the village!']
+];
+let milestoneReached = 0;
+function checkMilestone() {
+  if (state !== 'playing') return;
+  const hit = MILESTONES.filter(([p]) => p > milestoneReached && score >= p).pop();
+  if (!hit) return;
+  milestoneReached = hit[0];
+  const pop = el('div', { className: 'milestone', textContent: hit[1] });
+  pop.setAttribute('role', 'status');
+  world.querySelectorAll('.milestone').forEach(n => n.remove());
+  world.append(pop);
+  setTimeout(() => pop.remove(), 2200);
+}
+
 function updateHUD() {
   const displayScore = Number(score.toFixed(2));
   percent.textContent = displayScore + '%';
@@ -130,6 +149,7 @@ function updateHUD() {
   const t = Math.ceil(time);
   timer.textContent = String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
   clock.classList.toggle('low', state === 'playing' && time <= 10);
+  checkMilestone();
 }
 
 function start() {
@@ -142,7 +162,8 @@ function startLevel(index) {
   const level = LEVELS[levelIndex];
   state = 'playing';
   score = 0; time = level.duration; playerX = 120; velocityY = 0; jumpHeight = 0; camera = 0; face = 1; animT = 0; lastRockX = -Infinity; speedBoostUntil = 0; landUntil = 0; animRate = 1;
-  stumbleUntil = 0; tripCooldownUntil = 0; spillUntil = 0;
+  stumbleUntil = 0; tripCooldownUntil = 0; spillUntil = 0; milestoneReached = 0;
+  world.querySelectorAll('.milestone').forEach(n => n.remove());
   player.classList.remove('stumble', 'spill');
   keys.clear(); items = []; objects.replaceChildren();
   world.dataset.scene = level.scene;

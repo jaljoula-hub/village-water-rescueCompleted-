@@ -242,6 +242,7 @@ function collect(item) {
   item.el.remove();
   const points = item.def.points;
   score = Math.max(0, Math.min(100, score + points));
+  Sound.play(item.type === 'gold' ? 'gold' : points > 0 ? 'drop' : 'splash');
   if (item.type === 'gold') speedBoostUntil = Math.max(speedBoostUntil, performance.now() + 10000);
   popText(item, (points > 0 ? '+' : '\u2212') + Math.abs(points), points < 0);
   if (points < 0) {
@@ -264,6 +265,7 @@ function trip(item, now) {
   spillUntil = now + 550;
   player.classList.add('stumble');
   if (spilled > 0) player.classList.add('spill');
+  Sound.play('splash');
   popText(item, '\u2212' + Number(spilled.toFixed(2)) + '%', true);
   message.textContent = spilled > 0
     ? `You tripped! ${Number(spilled.toFixed(2))}% of your water spilled.`
@@ -272,7 +274,7 @@ function trip(item, now) {
 }
 
 function jump() {
-  if (state === 'playing' && jumpHeight === 0) velocityY = JUMP;
+  if (state === 'playing' && jumpHeight === 0) { velocityY = JUMP; Sound.play('jump'); }
 }
 
 function overlapsPlayer(item, previousX, previousJumpHeight, currentX, currentJumpHeight) {
@@ -413,6 +415,7 @@ function finish(won) {
     screen('You Saved the Village!', '<span class="stat">Water Collected: 100%</span><br>The villagers have clean water!',
       [['Play Again', start, true], ['Main Menu', menu]], { titleClass: 'ribbon', cast: cast(true) });
   } else {
+    Sound.play('fail');
     screen('Time\u2019s Up!', `${LEVELS[levelIndex].name} still needs clean water.<br><span class="stat">Water Collected: ${Number(score.toFixed(2))}%</span>`,
       [['Retry This Level', () => startLevel(levelIndex), true], ['Main Menu', menu]], { titleClass: 'lose', cast: cast(false, true) });
   }
@@ -426,6 +429,7 @@ function notEnoughWater() {
   layout(0);
   updateHUD();
   message.textContent = 'Not enough water! Try again.';
+  Sound.play('fail');
   screen('\uD83D\uDCA7 Not Enough Water!',
     'Oh no! Your village still needs clean water. Try again and collect enough water to complete your delivery!',
     [['\uD83D\uDD04 Try Again', () => { if (state === 'blocked') startLevel(levelIndex); }, true]],
@@ -454,6 +458,7 @@ function completeLevel() {
   keys.clear();
   villagers.classList.add('happy');
   setVillagers(true);
+  Sound.play('win');
   if (levelIndex === LEVELS.length - 1) {
     finish(true);
     return;
@@ -522,6 +527,14 @@ document.querySelectorAll('[data-control]').forEach(b => {
 $('#pause').addEventListener('click', pause);
 $('#pauseMobile').addEventListener('click', pause);
 $('#reset').addEventListener('click', start);
+const soundBtn = $('#sound');
+function renderSoundBtn() {
+  const m = Sound.isMuted();
+  soundBtn.textContent = m ? '\uD83D\uDD07 Sound Off' : '\uD83D\uDD0A Sound On';
+  soundBtn.setAttribute('aria-pressed', String(!m));
+}
+soundBtn.addEventListener('click', () => { Sound.setMuted(!Sound.isMuted()); renderSoundBtn(); soundBtn.blur(); });
+renderSoundBtn();
 
 menu();
 updateHUD();

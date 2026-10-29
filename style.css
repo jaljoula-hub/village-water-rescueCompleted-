@@ -1,5 +1,5 @@
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet MS",Verdana,Arial,sans-serif;color:#16394c}
+body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Montserrat",Arial,sans-serif;color:#16394c;font-weight:500}
 .shell{width:min(1120px,100%);margin:auto;padding:12px}
 .brand{display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:15px;margin:4px 0 12px;color:#7a5200}
 .brand strong{color:#0a6fb0}
@@ -9,8 +9,8 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 .hud{position:absolute;top:12px;left:12px;right:12px;z-index:8;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
 .level-info{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;min-width:170px;padding:6px 12px;border:2px solid #e3faff;border-radius:12px;background:#123e58ed;color:#fff;text-align:center;box-shadow:0 4px 12px #0004}
 .level-info strong{font-size:12px;color:#ffd45b}
-.level-info span{font-size:14px;font-weight:bold}
-.meter,.clock{background:linear-gradient(#123e58f2,#08283bf2);color:#fff;border:3px solid #e3faff;border-radius:16px;padding:8px 14px;font-weight:bold;box-shadow:0 4px 12px #0005}
+.level-info span{font-size:14px;font-weight:500}
+.meter,.clock{background:linear-gradient(#123e58f2,#08283bf2);color:#fff;border:3px solid #e3faff;border-radius:16px;padding:8px 14px;font-weight:500;box-shadow:0 4px 12px #0005}
 .meter{width:min(310px,62%);display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"icon label pct" "icon track track";gap:3px 10px;align-items:center}
 .meter-icon{grid-area:icon;width:30px;height:38px}
 .meter span{grid-area:label;font-size:15px}
@@ -80,7 +80,7 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 #villagers.happy .v3{animation-delay:.24s}
 #villagers.happy .v4{animation-delay:.06s}
 @keyframes villager-cheer{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-12%) rotate(2deg)}}
-#thanks{position:absolute;bottom:106%;left:0;background:#fff;border:3px solid #4d4b34;border-radius:18px;padding:8px 10px;width:150px;text-align:center;font-size:13px;font-weight:bold;display:none}
+#thanks{position:absolute;bottom:106%;left:0;background:#fff;border:3px solid #4d4b34;border-radius:18px;padding:8px 10px;width:150px;text-align:center;font-size:13px;font-weight:500;display:none}
 #thanks::after{content:"";position:absolute;bottom:-11px;left:30px;border:8px solid transparent;border-top-color:#4d4b34;border-bottom:0}
 #villagers.happy #thanks{display:block}
 
@@ -93,7 +93,7 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 .item{object-fit:contain}
 @keyframes float{to{margin-bottom:8px}}
 @keyframes glow{from{filter:drop-shadow(0 0 6px #ffe35a)}to{filter:drop-shadow(0 0 20px #ffb300);margin-bottom:6px}}
-.pop{position:absolute;z-index:9;font-weight:bold;font-size:22px;color:#fff;text-shadow:0 2px 0 #0a5f90,0 0 6px #000a;pointer-events:none;animation:pop .8s ease-out forwards}
+.pop{position:absolute;z-index:9;font-weight:500;font-size:22px;color:#fff;text-shadow:0 2px 0 #0a5f90,0 0 6px #000a;pointer-events:none;animation:pop .8s ease-out forwards}
 .pop.bad{color:#ffb0a0}
 @keyframes pop{to{transform:translateY(-50px);opacity:0}}
 
@@ -107,14 +107,14 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 .panel h1.lose{color:#e8501c;text-shadow:2px 3px 0 #5a2008}
 .panel p{line-height:1.55;margin:6px 0 10px}
 .panel ol{text-align:left;line-height:1.7;margin:6px auto 12px;padding-left:28px;max-width:360px;font-size:16px}
-.panel button,.footer button{cursor:pointer;background:linear-gradient(#b8793e,#78461f);color:#fff;border:2px solid #f6ca7e;border-radius:12px;padding:10px 22px;font:bold 17px "Trebuchet MS",Verdana,sans-serif;margin:5px;box-shadow:0 4px #4b2d19;text-shadow:0 1px 2px #0006}
+.panel button,.footer button{cursor:pointer;background:linear-gradient(#b8793e,#78461f);color:#fff;border:2px solid #f6ca7e;border-radius:12px;padding:10px 22px;font:500 17px "Montserrat",Arial,sans-serif;margin:5px;box-shadow:0 4px #4b2d19;text-shadow:0 1px 2px #0006}
 .panel button:active,.footer button:active{transform:translateY(3px);box-shadow:0 1px #4b2d19}
 .panel button.primary{background:linear-gradient(#8ddf51,#3c9a20);box-shadow:0 4px #286a18}
 .panel.wood{background:linear-gradient(#7a5a3a,#5a3f26);border-color:#3b2614;color:#fff}
 .panel.wood h1{color:#ffc907}
 .panel.wood .menu-btn{display:block;width:78%;margin:10px auto}
 .panel button:hover,.footer button:hover{filter:brightness(1.12)}
-.panel .stat{font-size:20px;font-weight:bold;color:#0a5fa8}
+.panel .stat{font-size:20px;font-weight:500;color:#0a5fa8}
 .cast{display:flex;justify-content:center;align-items:flex-end;gap:8px;height:clamp(70px,16vw,110px);margin:6px 0}
 .cast img{height:100%;animation:cheer .55s ease-in-out infinite alternate}
 @keyframes cheer{to{transform:translateY(-14%)}}
@@ -125,7 +125,7 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 
 /* Controls */
 .mobile-controls{display:flex;justify-content:center;gap:10px;background:#144c64;padding:10px}
-.mobile-controls button{display:flex;align-items:center;justify-content:center;gap:6px;border:2px solid #fff;border-radius:12px;background:linear-gradient(#fff3c2,#e9d08a);color:#173c50;padding:10px 20px;font:bold 18px "Trebuchet MS",Verdana,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 3px #8a6a2a}
+.mobile-controls button{display:flex;align-items:center;justify-content:center;gap:6px;border:2px solid #fff;border-radius:12px;background:linear-gradient(#fff3c2,#e9d08a);color:#173c50;padding:10px 20px;font:500 18px "Montserrat",Arial,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 3px #8a6a2a}
 .mobile-controls button:active{transform:translateY(2px)}
 .footer{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#103f56;color:#fff;padding:8px 12px;min-height:56px}
 .footer #message{flex:1;font-size:14px}
@@ -153,14 +153,20 @@ body{margin:0;background:linear-gradient(#cfeeff,#eef9e6);font-family:"Trebuchet
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
 /* charity: water section */
-.cw-section{margin:16px auto 8px;max-width:960px;text-align:center;background:linear-gradient(#fff,#eaf6fd);border:4px solid #ffc907;border-radius:18px;padding:18px 16px;box-shadow:0 5px #1684bd;color:#0a3f63;font-family:"Trebuchet MS",Verdana,sans-serif}
+.cw-section{margin:16px auto 8px;max-width:960px;text-align:center;background:linear-gradient(#fff,#eaf6fd);border:4px solid #ffc907;border-radius:18px;padding:18px 16px;box-shadow:0 5px #1684bd;color:#0a3f63;font-family:"Montserrat",Arial,sans-serif}
 .cw-section h2{margin:0 0 8px;font-size:clamp(22px,4vw,30px);color:#1684bd}
 .cw-section p{margin:0 auto 14px;max-width:680px;font-size:16px;line-height:1.5}
 .cw-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
-.cw-btn{display:inline-block;min-height:48px;box-sizing:border-box;padding:13px 22px;border-radius:14px;font-weight:bold;font-size:17px;text-decoration:none;border:3px solid #fff;box-shadow:0 4px #0a3f63;transition:transform .1s,filter .15s}
+.cw-btn{display:inline-block;min-height:48px;box-sizing:border-box;padding:13px 22px;border-radius:14px;font-weight:500;font-size:17px;text-decoration:none;border:3px solid #fff;box-shadow:0 4px #0a3f63;transition:transform .1s,filter .15s}
 .cw-learn{background:#1684bd;color:#fff}
 .cw-donate{background:#ffc907;color:#0a2f4a}
 .cw-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
 .cw-btn:active{transform:translateY(2px)}
 .cw-btn:focus-visible{outline:3px solid #0a3f63;outline-offset:3px}
 @media(max-width:580px){.cw-section{margin:12px 8px;padding:14px 10px}.cw-btn{width:100%}}
+
+/* Montserrat: bold headings, medium everything else */
+h1,h2,.level-info strong{font-weight:700}
+button,input,.cw-btn{font-family:"Montserrat",Arial,sans-serif}
+.panel h1,.cw-section h2{font-weight:700}
+@media(max-width:580px){.cw-section p{font-size:15px}}
